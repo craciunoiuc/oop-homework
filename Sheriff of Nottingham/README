@@ -1,0 +1,101 @@
+Craciunoiu Cezar 324CA
+Programare Orientata pe Obiecte
+Tema 1 - Sheriff of Nottingham
+
+Implementarea temei a incercat sa abordeze problemele din cerintele temei
+intr-un mod care sa faciliteze scalabilitatea acesteia. Din pacate, multe din
+datele de intrare nu au fost oferite de la tastatura, de aceea au trebuit sa
+fie introduse direct in cod. Pentru aceasta "citire" s-a implementat metoda
+buildMaps din Main. S-a dorit simularea pasilor din enuntul problemei de
+aceea a fost creata clasa GameExecution care contine cate o metoda pentru
+fiecare etapa a jocului(startGame, drawCards, declareAssets, inspectBags,
+expandIllegalAssets, giveAward, calculateScore). Se observa cum prin denumirea
+metodelor se poate depista usor la ce pas al simularii jocului se afla
+jucatorii implementati.
+
+Pentru implementarea temei s-au folosit 3 interfete(Player, Merchant, Sheriff)
+care contin operatiile ce orice jucator/negustor/serif ar trebui sa le poata
+face pentru a se putea desfasura jocul:
+- Sheriff -> control - Orice serif ar trebui sa poata sa controleze pungile
+			primite de la negustori si sa faca cu ele ce doreste. Este
+			singurul si cel mai important rol al serifului.
+		  -> removeOneAsset - Un serif trebuie sa poata sa elimine din
+			bunurile negustorilor, macar unul o data.
+- Merchant -> putInBag - Fiecare negustor ar trebui sa poata sa isi umple
+			punga cu bunurile dorite pentru a fi data la serif. 
+- Player -- Mosteneste metodele din Sheriff si Merchant deoarece fiecare
+			jucator va fi pus in aceste 2 ipostaze. De asemenea fiecare
+			strategie implementata este obligatoriu sa mosteneasca aceasta
+			clasa pentru ca toate strategiile sa aiba in comun metode de baza.
+		-> addToPack - Un jucator trebuie sa poata sa interactioneze cu
+			pachetul de joc.
+		-> fillHand - Un jucator trebuie sa poata sa mai ia carti daca a ramas
+			fara.
+		-> get/setName - Un jucator trebuie sa se poate identifica printr-un
+			nume.
+		-> getInventory - Metoda a fost adauga pentru precautie in interfata,
+			pentru ca se garanta ca fiecare jucator are un inventar.
+
+Clasa SheriffBag (o instanta a acesteia) este detinuta Bag 
+(in relatie de HAS-A) si reprezinta mai mult o separare a bunurilor ce
+urmeaza sa fie predate la serif de cele care inca se afla in inventarul
+negustorului. De asemenea, prin aceasta implementare se garanteaza ca seriful
+nu poate avea acces la la restul bunurilor jucatorilor cum nici ceilalti
+jucatori nu se uita in cartile celorlalti. Bunurile au fost salvate sub forma
+perechilor cheie-valoare/id-numar.
+
+Fiecare strategie implementata detine o instanta a clasei Bag. Aceasta are
+in interiorul ei toate campurile necesare unui jucator pentru "a face negot".
+Se observa ca numele este in afara clasei Bag. Principalele metode din aceasta
+clasa sunt cele de get/set cu mici variatii(add) deoarece ea reprezinta mai
+mult o encapsulare a campurilor.
+
+Clasa Base detine implementarea primei strategii de joc "basic". Aceasta
+implementeaza interfata de baza Player si toate metodele definite in ea
+descrise anterior. De asemenea, mai sunt prezente si alte metode precum:
+-> calculateBag - Construieste vectorul de bunuri ce urmeaza sa fie pus in
+punga ce va fi data serifului.
+-> calcFrequency - Este folosita de calculateBag. Ea cauta cel mai profitabil
+bun ce poate fi pus in sac, respectand strategia basic.
+-> removeAssets - Metoda ce seamana cu removeOneAsset, dar elimina toate
+bunurile de un tip, utila la bunurile legale.
+-> controlPlayer - Metoda ce este o particularizare a metodei control. Aceasta
+implementeaza logica impusa de strategia basic.
+
+Clasa Greedy mosteneste clasa Base, deoarece, cum se precizeaza si in enunt,
+o mare parte din logica strategiei greedy se foloseste de cea din Base. Clasa
+contine metode ce suprascriu pe cele din Base(putInBag, calculateBag, control)
+cat si altele noi.
+-> calculateBag - Metoda implementeaza logica Greedy.
+-> control - Metoda se foloseste de metoda controlPlayer mostenita pentru a 
+simula strategia greedy de control(care in 50% din cazuri este de tip basic).
+-> findIllegal - Metoda returneaza cel mai valoros bun ilegal din inventar.
+
+Clasa Bribe mosteneste de asemenea pe Base si este putin mai variata, fata de
+Greedy, deoarece se intra in amanunt cu ideea de mita.
+-> bribeCalculateBag - Se foloseste de strategia din Base intr-un caz, iar in
+celelalte cazuri este implementata strategia sa proprie.
+-> numberofIllegals - Returneaza numarul de bunuri ilegale detinute.
+-> findIllegal - Aceeasi metoda ca cea din Greedy, dar, pentru ca cele doua
+clase sunt finale iar metoda este privata, s-a ales sa se includa din nou.
+
+Dupa cum a fost precizat mai sus, desfasurarea jocului a fost implementata in
+clasa GameExecution prin metode statice pentru a delimita intr-un mod mai
+facil etapele programului. In toate metodele, pentru a se pastra
+scalabilitatea s-a lucrat cu un vector de jucatori al carui tip este dat de
+interfata Player. Deoarece implementarea din GameExecution nu tine in mod
+neaparat de POO nu o sa se intre foarte mult in amanunt. Fiecare metoda
+lucreaza cu vectorul de jucatori si cu tabelele de asociere pentru a pastra
+scalabilitatea programului, putandu-se adauga foarte usor jucatori noi sau
+produse noi, avandu-se grija sa se adauge si la initializarea tabelelor
+informatia noua.
+
+Pe langa citirea si initializarea datelor si rularea programului clasa Main
+mai realizeaza unul dintre cei mai importanti pasi, sortarea si afisarea
+rezultatelor finale, principalul interes in rularea programului.
+
+Se precizeaza ca nu a fost cerut in mod explicit un JavaDoc(s-a cerut
+includerea doar a fisierelor de tip .java), dar se poate genera foarte usor,
+deoarece comentariile au fost adaugate in stil generabil JavaDoc. De asemenea,
+deoarece in rularea pe Vmchecker nu este inclus si JavaFx, s-a ales sa se
+implementeze clasa Pair, care functioneaza intr-un mod similar cu cea de acolo.

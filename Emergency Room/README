@@ -1,0 +1,63 @@
+============================ Tema 3 - ER Simulator ============================
+Nume: Craciunoiu Cezar
+Grupa: 324CA
+
+In tema este implementata simularea de baza de date automate a unui spital
+propusa in enuntul temei. A fost utilizat atat scheletul propus, cat si
+fisierele .jar oferite pentru parse-area inputului in format JSON.
+
+Punctul de intrare al programului este clasa Main. In metoda main se
+instantiaza clasa Hospital, folosindu-se design-ul Singleton. Apoi se folosesc
+pachetele oferite pentru a parse-a fisierul de intrare, utilizandu-se
+indicatiile oferite. Apoi, se initializeaza constantele din program, cele
+oferite in enunt. Inainte de inceperea executiei se adauga si 3 Observeri, cate
+unul pentru fiecare tip de afisare (afisare de pacienti, afisare de pacienti
+tratati din asistente, afisare a rezultatului consultarii doctorilor).
+
+Precum si in enunt, prima etapa a programului este etapa de triere, numita si
+triageStage. In aceasta metoda se aleg mai intai pacientii care au venit in
+acea runda la spital si se elimina din lista initiala. Acestia sunt sortati
+dupa severitate si apoi adaugati in o coada de triere. Din aceasta sunt alesi
+cate unul pentru fiecare asistenta si se verifica starea de urgenta a acestora.
+Fiecare pacient verificat este adaugat in coada de examinare.
+
+In coada de examinare sunt prezenti atat pacienti care au fost la investigatii cat si pacienti noi veniti. Acestia sunt sortati in modul sugerat. Daca un
+pacient este nou venit, acesta merge direct la doctor pentru consultatie. Daca
+a fost deja la investigatii doctorul verifica rezultatul si alege ce sa faca cu
+el. Daca pacientul trebuie operat si nu exista nici un chirurg disponibil el
+este transferat la alt spital. In cazul celor care au fost la consultatie si
+au fost trimisi la investigatii, acestia sunt scos din coada de examinare si
+mutati in coada de investigatii.
+
+La etapa de investigatii se sorteaza in mod asemanator pacientii si sunt luati
+cate unul pe rand pentru a li se face teste. Cei care au fost testati sunt
+trimisi cu rezultatul inapoi in coada de examinare, ceilalti asteptandu-si
+randul.
+
+Urmeaza pasul in care sunt tratati pacientii internati. Se trece prin fiecare
+persoana si se aplica tratamentul hotarat. Dupa aceea, urmeaza inspectia
+persoanelor internate. Fiecare doctor isi inspecteaza persoanele internate si
+hotaraste daca sa ii externeze sau nu.
+
+Pentru fiecare etapa care ar trebui sa afiseze ceva sunt anuntati observatorii.
+
+In afara de pachetele observers si hospital tema mai are si urmatoarele.
+Pachetul enums unde sunt incluse toate enum-urile folosite, cele din schelet
+cat si altele noi. Ele sunt folosite pentru afisarea informatiilor.
+
+In pachetul entities sunt incluse urmatoarele:
+Clasa Disease care este o subclasa a lui Patient. Ea include informatii despre
+boala pacientului.
+Clasa Patient contine informatia necesara rularii programului cat si mai multe
+comparatoare cat si functii de comparare folosite in sortare.
+Clasa Doctor contine informatia despre doctorul curent cat si o lista cu
+pacientii internati de acesta. De asemenea aici este include metoda
+consultPatient. In ea se verifica mai intai daca pacientul trebuie trimis
+acasa. Apoi, sunt verificate cazurile in care el a fost investigat si trebuie
+internat sau operat. In fiecare din aceste cazuri este schimbat status-ul
+pacientilor si, eventual, aplicata formula data pentru internare.
+
+S-au mai folosit si alte clase "ajutatoare". Clasa Pair a fost inclusa pentru
+a tine minte perechea (tip de urgenta, pacient). Clasa HospitalBuilder
+initializeaza constantele din program.
+

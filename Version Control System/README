@@ -1,0 +1,52 @@
+====================================Tema 2====================================
+Craciunoiu Cezar
+Grupa: 324CA
+
+-- VCS --
+
+In tema s-a folosit scheletul oferit si s-a incercat sa se pastreze cat mai
+mult continutul acestuia. Cele mai mari modificari au fost aduse pachetului
+Vcs. In utils au fost completate spatiile cu TODO intr-un mod care sa permita
+interactiunea cat mai buna dintre clase, fara a afecta structura scheletului.
+
+Deoarece sistemul de fisiere era deja oferit, s-a incercat lucrarea cu acesta
+ca si cum s-ar fi lucrat cu sistemul de fisiere real, adica a fost luat
+"ca atare". Metodele din clasele din utils au fost folosite pentru a facilita
+interactiunea dintre Vcs si File System.
+
+Vcs-ul a fost construit grupand branch-urile si commit-urile. Branch-urile au
+fost salvate intr-o lista deoarece acestea sunt aproape in totalitate
+independente unele de celalalte. Commit-urile au fost construite ca o lista
+inlantuita, fiecare commit avand un parinte si un copil. Fiecare branch are
+un commit initial unde este salvata copia de File System de unde o sa plece
+restul de commituri. Cele doua clase VcsBranch si VcsCommit sunt folosite
+pentru a retine informatie, ele neavand alte metode in afara de getteri si
+setteri. De asemenea in branch este salvat si pointerul la head.
+
+Sistemul de versionare detine 7 operatii folosindu-se de ideea de visitor:
+VcsBranch -> execute -> verifica daca comanda data este buna, cloneaza
+sistemul si creeaza un nou branch.
+CommitBranch -> execute -> verifica daca comanda este buna, reconstruieste
+mesajul ce urmeaza sa fie dat si creeaza un nou commit in branch-ul pe care
+se afla.
+InvalidVcsOperation -> execute -> returneaza codul de eroare pentru cazurile
+in care comanda data este invalida.
+LogOperation -> execute -> itereaza prim toate commiturile dintr-un branch si
+afiseaza mesajul si id-ul fiecaruia.
+RollbackOperation -> execute -> copiaza sistemul de fisiere de la ultimul
+commit in imaginea lui pe care se lucreaza in acel moment (activeSnapshot).
+StatusOperation -> execute -> afiseaza numele branch-ului pe care se afla
+head-ul si toate operatiile ce nu au fost commit-uite pana acum.
+CheckoutOperation -> execute -> realizeaza 2 functii: stergerea de commit-uri
+si mutarea pe alte branch-uri. In primul rand se verifica daca exista
+operatii in staging si apoi se uite daca comanda contine sau nu argumentul
+"-c". Daca exista, mai intai se verifica daca commit-ul la care se vrea
+intoarcerea exista (daca nu se intoarce o eroare) si se muta head-ul
+branch-ului pe acesta, taiandu-se legatura cu copii acestuia, urmand ca 
+masina virtuala sa stearga commit-urile. Daca se doreste mutarea pe alt
+branch, se muta doar head-ul branch-urilor. De asemenea este copiata si
+imaginea sistemului de fisiere in imaginea pe care se lucreaza.
+
+Se precizeaza ca au fost semnate doar clasele care au fost create. Restul
+claselor ce au fost doar completate apartin persoanei ce a pus scheletul
+la dispozitie.
