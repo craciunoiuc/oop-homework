@@ -21,7 +21,8 @@ dupa severitate si apoi adaugati in o coada de triere. Din aceasta sunt alesi
 cate unul pentru fiecare asistenta si se verifica starea de urgenta a acestora.
 Fiecare pacient verificat este adaugat in coada de examinare.
 
-In coada de examinare sunt prezenti atat pacienti care au fost la investigatii cat si pacienti noi veniti. Acestia sunt sortati in modul sugerat. Daca un
+In coada de examinare sunt prezenti atat pacienti care au fost la investigatii
+cat si pacienti noi veniti. Acestia sunt sortati in modul sugerat. Daca un
 pacient este nou venit, acesta merge direct la doctor pentru consultatie. Daca
 a fost deja la investigatii doctorul verifica rezultatul si alege ce sa faca cu
 el. Daca pacientul trebuie operat si nu exista nici un chirurg disponibil el
